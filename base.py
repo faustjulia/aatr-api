@@ -31,37 +31,36 @@ NEVER:str = 'I prefer not to exercise'
 
 
 # Question 4
-def Question_4():
-    AGE_OR_BIRTHDATE: str = input(
-        'Enter your birthday in YYYY-MM-DD format or your DOB: ')
 
-    if '-' in AGE_OR_BIRTHDATE:
-        year, month, day = map(int, AGE_OR_BIRTHDATE.split('-'))
-        date1 = datetime.date(year, month, day)
-        AGE = get_age(date1)
-        print(AGE)
 
-    else:
-        AGE = AGE_OR_BIRTHDATE
-        print('Person\'s age is', AGE)
+AGE_OR_BIRTHDATE: str = input('Enter your birthday in YYYY-MM-DD format or your DOB: ')
 
-    answers: Dict = {
-        # 'Q1': NO_ACTIVITY,
-        # 'Q2': HAVE_A_GOOD_TIME,
-        # 'Q3': [EVENING, NIGHT, EARLY_MORNING],
-        'Q4': AGE
-    }
+if '-' in AGE_OR_BIRTHDATE:
+    year, month, day = map(int, AGE_OR_BIRTHDATE.split('-'))
+    date1 = datetime.date(year, month, day)
+    AGE = get_age(date1)
+    print(AGE)
 
-    report_text: str = ''
+else:
+    AGE = AGE_OR_BIRTHDATE
+    print('Person\'s age is', AGE)
 
-    if answers['Q4'] >= 60:
-        report_text += Text.OLD_ADULTHOOD
-    elif 25 < answers['Q4'] < 60:
-        report_text += Text.MIDDLE_AGE
-    else:
-        report_text += Text.YOUNG_ADULT
 
-    return AGE
+answers: Dict = {
+    # 'Q1': NO_ACTIVITY,
+    # 'Q2': HAVE_A_GOOD_TIME,
+    # 'Q3': [EVENING, NIGHT, EARLY_MORNING],
+    'Q4': AGE
+}
+
+report_text: str = ''
+
+if answers['Q4'] >= 60:
+    report_text += Text.OLD_ADULTHOOD
+elif 25 < answers['Q4'] < 60:
+    report_text += Text.MIDDLE_AGE
+else:
+    report_text += Text.YOUNG_ADULT
 
 
 # Question 1
