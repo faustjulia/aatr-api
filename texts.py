@@ -1,5 +1,37 @@
-from base import AGE
+class Answer:
+
+    AEROBICS: str = 'Aerobics'
+    BALANCE: str = 'Balance'
+    FLEXIBILITY: str = 'Flexibility'
+    STRENGTH: str = 'Strength'
+    NO_ACTIVITY: str = 'No Activity'
+
+    HAVE_A_GOOD_TIME: str = 'Have a good time'
+    LOOSE_WEIGHT: str = 'Loose Weight'
+    BE_HEALTHY: str = 'Be healthy'
+    I_DONT_EXERCISE:str = 'I don\'t exercise'
+
+    EARLY_MORNING:str = 'Early morning'
+    DAY_TIME:str = 'During the day'
+    EVENING:str = 'Early evening'
+    NIGHT:str = 'Late at night'
+    NEVER:str = 'I prefer not to exercise'
+
+    # birthday must be in YYYY-MM-DD format
+    AGE_OR_BIRTHDATE: str = '1998-03-11'
+
+    YES: str = 'Yes'
+    NO: str = 'No'
+    I_DONT_KNOW: str = 'I don\'t know'
+
+    SWIMMING: str = 'Swimming'
+    HIKING: str = 'Hiking up the mountain'
+    BIKING:str = 'Dirt biking'
+    PICNIC:str = "Having picnic with the sunset"
+
+
 class Text:
+
     AEROBICS:str = 'Lorem ipsum 1. Question - ANSWER_1 dolor sit amet, ' \
                   'consectetur adipiscing elit. Mauris sed ligula vitae ' \
                   'tellus pellentesque vehicula nec eu velit. Curabitur ' \
@@ -43,7 +75,7 @@ class Text:
                        'odio vehicula, posuere elit in, ullamcorper lectus. ' \
                        'Mauris pharetra dapibus congue. Suspendisse potenti.'
 
-    HAVE_A_GOOD_TIME_AND_BE_HEALTHY: str = '2. Question - ANSWER_1 or ANSWER_3 tincidunt ' \
+    HAVE_A_GOOD_TIME_OR_BE_HEALTHY: str = '2. Question - ANSWER_1 or ANSWER_3 tincidunt ' \
                             'venenatis risus. Vestibulum imperdiet enim at ' \
                             'nibh sodales, eget scelerisque odio finibus. ' \
                             'Nullam ut mi eget sapien accumsan iaculis. ' \
@@ -54,7 +86,7 @@ class Text:
                             '2. Question - ANSWER_1 or ANSWER_3 ' \
                             'Suspendisse potenti.'
 
-    LOOSE_WEIGHT_AND_NO_EXERCISE:str = 'In nisl ligula, porttitor vel ' \
+    LOOSE_WEIGHT_OR_NO_EXERCISE:str = 'In nisl ligula, porttitor vel ' \
                                        'lobortis vel, commodo quis mi. ' \
                                        'Nullam sollicitudin odio ut felis ' \
                                        'tristique tempus. Cras sagittis auctor nulla ' \
@@ -105,7 +137,7 @@ class Text:
                              'iaculis interdum pulvinar. Vivamus sit amet ' \
                              'sagittis risus. Morbi ut pellentesque sapien.'
 
-    MORNING_AND_EVENING_OR_NIGHT: str = 'Lorem ipsum dolor sit amet, consectetur ' \
+    MORNING_OR_EVENING_OR_NIGHT: str = 'Lorem ipsum dolor sit amet, consectetur ' \
                                'adipiscing elit. Cras viverra luctus nunc, ' \
                                'non ultrices mauris molestie vitae. ' \
                                'Sed gravida purus finibus ' \
@@ -131,33 +163,94 @@ class Text:
                          'non proident, sunt in culpa qui officia deserunt ' \
                          'mollit anim id est laborum.'
 
-    OLD_ADULTHOOD:str = f'Lorem ipsum dolor sit amet, consectetur adipiscing ' \
-                        f'elit. Age: {AGE} Vivamus hendrerit arcu eros, ' \
-                        f'nec bibendum mi sodales id. Ut auctor nisl a placerat ' \
-                        f'porttitor. Duis at tortor posuere, gravida sapien in, ' \
-                        f'fermentum ligula.Quisque eu ipsum lobortis, hendrerit ' \
-                        f'justo vitae, varius nisi. Etiam in leo feugiat purus ' \
-                        f'facilisis tempor. Fusce congue metus non massa ' \
-                        f'mollis, id imperdiet ex viverra. ' \
-                        f'Cras Age: {AGE} imperdiet lectus at ' \
-                        f'imperdiet ornare.'
+    NO: str = 'Nam maximus ANSWER_NO et massa laoreet congue. In facilisis egestas ' \
+              'neque. Nullam ac euismod nibh. ANSWER_NO Aenean pulvinar ' \
+              'lacinia ligula, nec lobortis magna accumsan sed.Duis ' \
+              'tempor pellentesque quam. ANSWER_NO Sed non est dui. ' \
+              'Sed commodo odio vel augue pellentesque, et sagittis ' \
+              'dolor tristique. Phasellus mollis magna eu egestas viverra. ' \
+              'Cras elementum erat vel libero venenatis, ut suscipit ' \
+              'nibh scelerisque.'
 
-    MIDDLE_AGE: str = f'Lorem ipsum dolor sit amet, consectetur adipiscing ' \
-                      f'elit. Age: {AGE} Vivamus hendrerit arcu eros, ' \
+    I_DONT_KNOW:str = 'Phasellus ac sem ornare, ANSWER_I_DONT_KNOW euismod ' \
+                      'tellus id, sagittis felis. Nullam viverra est nibh, ' \
+                      'et dignissim elit tincidunt nec. Integer vel dolor ' \
+                      'aliquam, eleifend metus in, tincidunt erat. Nam id ' \
+                      'facilisis tortor.Donec malesuada, libero nec ' \
+                      'tincidunt ANSWER_I_DONT_KNOW commodo, nulla ' \
+                      'velit imperdiet mauris, sit amet cursus dui ' \
+                      'quam maximus justo. In accumsan nisi ut orci ' \
+                      'finibus ullamcorper. Aliquam consequat ' \
+                      'risus non orci dapibus, id commodo erat egestas.'
+
+    YES_HIKING_BIKING: str = 'Mauris viverra YES_HIKING_BIKING ante, eget faucibus ' \
+                             'felis pulvinar et. Suspendisse urna diam, ' \
+                             'ANSWER_YES and ANSWER_YES_CHOICE_2, ' \
+                             'ANSWER_YES_CHOICE_3 elementum nec ' \
+                             'tincidunt ornare, convallis condimentum nisi.' \
+                             'Nam gravida ac magna eget cursus. ' \
+                             'ANSWER_YES and ANSWER_YES_CHOICE_2, ' \
+                             'ANSWER_YES_CHOICE_3 Maecenas fermentum lacus ' \
+                             'eu tempor condimentum. Quisque tristique ' \
+                             'viverra justo, et mollis magna ornare a. ' \
+                             'In lacus elit, vestibulum a ex facilisis, ' \
+                             'faucibus gravida dui. Morbi consectetur ' \
+                             'egestas tempor. Sed neque ex, ' \
+                             'condimentum congue facilisis non, aliquet sed odio.'
+
+    YES_SWIMMING_PICNIC: str = 'Fusce sem YES_SWIMMING_PICNIC, maximus ' \
+                               'ac efficitur in, ' \
+                               'accumsan eu libero. Praesent facilisis, ' \
+                               'augue at pretium malesuada, ANSWER_YES ' \
+                               'and ANSWER_YES_CHOICE_1, ANSWER_YES_CHOICE_4 ' \
+                               'erat eros eleifend velit, at iaculis nunc ' \
+                               'nisi nec odio. Ut consequat ac metus a ' \
+                               'bibendum. Donec venenatis euismod eros ' \
+                               'ac dignissim. Donec dictum odio a augue ' \
+                               'tincidunt interdum.'
+
+    YES_AND_ANY_OTHER_CASE: str = 'Lorem ipsum YES_AND_ANY_OTHER_CASE, consectetur ' \
+                                  'adipiscing elit. Pellentesque sed ' \
+                                  'scelerisque nulla, at mattis mauris. ' \
+                                  'Vestibulum dignissim viverra nulla quis t' \
+                                  'empus. (Any other case)Donec finibus nisl' \
+                                  ' sapien, sed auctor elit sodales ac. ' \
+                                  'Nulla dictum ante ante, ' \
+                                  'eget maximus mi efficitur nec.'
+
+
+    def old_adulthood(self, age: int) -> str:
+        return (
+            f'Lorem ipsum dolor sit amet, consectetur adipiscing ' \
+            f'elit. Age: {age} Vivamus hendrerit arcu eros, ' \
+            f'nec bibendum mi sodales id. Ut auctor nisl a placerat ' \
+            f'porttitor. Duis at tortor posuere, gravida sapien in, ' \
+            f'fermentum ligula.Quisque eu ipsum lobortis, hendrerit ' \
+            f'justo vitae, varius nisi. Etiam in leo feugiat purus ' \
+            f'facilisis tempor. Fusce congue metus non massa ' \
+            f'mollis, id imperdiet ex viverra. ' \
+            f'Cras Age: {age} imperdiet lectus at ' \
+            f'imperdiet ornare.'
+        )
+
+    def middle_age(self, age: int) -> str:
+        return (f'Lorem ipsum dolor sit amet, consectetur adipiscing ' \
+                      f'elit. Age: {age} Vivamus hendrerit arcu eros, ' \
                       f'nec bibendum mi sodales id. Ut auctor nisl a placerat ' \
                       f'porttitor. Duis at tortor posuere, gravida sapien in, ' \
                       f'fermentum ligula.Quisque eu ipsum lobortis, h' \
                       f'endrerit justo vitae, varius nisi. Etiam in ' \
-                      f'leo feugiat purus facilisis tempor. ' \
+                      f'leo Age: {age} purus facilisis tempor. ' \
                       f'Fusce congue metus non massa mollis, ' \
                       f'id imperdiet ex viverra. ' \
-                      f'Cras Age: {AGE} imperdiet lectus at imperdiet ornare.'
+                      f'Cras Age:  imperdiet lectus at imperdiet ornare.')
 
-    YOUNG_ADULT: str = f'Sed at aliquam ex. Vestibulum maximus erat in ' \
-                       f'justo maximus posuere. Age: {AGE}' \
+    def young_adult(self, age: int) -> str:
+        return(f'Sed at aliquam ex. Age: {age} Vestibulum maximus erat in ' \
+                       f'justo maximus posuere. Age: ' \
                        f'Suspendisse tellus magna, faucibus scelerisque ' \
                        f'dapibus et, luctus egestas nibh. Pellentesque ' \
                        f'eleifend mauris ac volutpat ullamcorper.Aenean ' \
                        f'vitae velit et nulla egestas viverra sit amet ' \
-                       f'eu eros. Age: {AGE} Nunc congue rutrum sem'
+                       f'eu eros. Age: {age}  Nunc congue rutrum sem')
 
