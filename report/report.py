@@ -1,4 +1,6 @@
-from typing import Dict, List
+from report.survey import Survey
+from report.questions import Questions
+
 
 class Report:
 

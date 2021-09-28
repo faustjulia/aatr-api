@@ -1,15 +1,5 @@
-from typing import Dict, List
-from texts import Text, Answer
-import datetime
 
-text = Text()
-
-def get_age(born) -> int:
-    today = datetime.date.today()
-    return int(today.year - born.year - ((today.month, today.day) < (born.month, born.day)))
-
-
-
+from report import Report, Survey, Answer
 
 survey = Survey(
     answers = {
