@@ -21,6 +21,8 @@ class Questions:
 
     def what_is_your_favorite_activity(self) -> str:
 
+        self.survey.Q1.lower()
+
         if self.survey.Q1 == Answer.AEROBICS:
             return text.AEROBICS
         elif self.survey.Q1 == Answer.BALANCE:

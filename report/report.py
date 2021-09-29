@@ -4,9 +4,10 @@ from report.survey import Survey
 
 class Report:
 
-    def __init__(self,
-                 survey: Survey
-                 ):
+    def __init__(
+        self,
+        survey: Survey
+    ):
         self.survey = survey
         self.questions = Questions(survey=survey)
 
