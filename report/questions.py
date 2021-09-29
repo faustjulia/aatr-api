@@ -11,7 +11,7 @@ text = Text()
 def get_age(born) -> int:
     today = datetime.date.today()
     return int(today.year - born.year - (
-            (today.month, today.day) < (born.month, born.day)))
+        (today.month, today.day) < (born.month, born.day)))
 
 
 class Questions:
@@ -33,35 +33,35 @@ class Questions:
     def what_is_the_main_goal_of_exercising(self) -> str:
 
         if (
-                self.survey.Q2 == Answer.HAVE_A_GOOD_TIME or
-                self.survey.Q2 == Answer.BE_HEALTHY
+            self.survey.Q2 == Answer.HAVE_A_GOOD_TIME or
+            self.survey.Q2 == Answer.BE_HEALTHY
         ):
             return text.HAVE_A_GOOD_TIME_OR_BE_HEALTHY
         elif (
-                self.survey.Q2 == Answer.LOOSE_WEIGHT or
-                Answer.I_DONT_EXERCISE
+            self.survey.Q2 == Answer.LOOSE_WEIGHT or
+            Answer.I_DONT_EXERCISE
         ):
             return text.LOOSE_WEIGHT_OR_NO_EXERCISE
 
     def when_do_you_like_to_exercise(self) -> str:
 
         if (
-                Answer.EVENING in self.survey.Q3 and
-                Answer.NIGHT in self.survey.Q3 and
-                Answer.EARLY_MORNING in self.survey.Q3
+            Answer.EVENING in self.survey.Q3 and
+            Answer.NIGHT in self.survey.Q3 and
+            Answer.EARLY_MORNING in self.survey.Q3
         ):
             return text.MORNING_AND_EVENING_AND_NIGHT
 
         elif (
-                Answer.DAY_TIME in self.survey.Q3 and
-                Answer.NEVER in self.survey.Q3
+            Answer.DAY_TIME in self.survey.Q3 and
+            Answer.NEVER in self.survey.Q3
         ):
             return Text.DAY_TIME_AND_NEVER
 
         elif (
-                Answer.EVENING in self.survey.Q3 or
-                Answer.NIGHT in self.survey.Q3 or
-                Answer.EARLY_MORNING in self.survey.Q3
+            Answer.EVENING in self.survey.Q3 or
+            Answer.NIGHT in self.survey.Q3 or
+            Answer.EARLY_MORNING in self.survey.Q3
         ):
             return text.MORNING_OR_EVENING_OR_NIGHT
 
@@ -93,16 +93,16 @@ class Questions:
             return text.I_DONT_KNOW
 
         elif (
-                self.survey.Q5['choice'] == Answer.YES_TO_ACTIVITIES and
-                Answer.HIKING in self.survey.Q5['yes_choices'] and
-                Answer.BIKING in self.survey.Q5['yes_choices']
+            self.survey.Q5['choice'] == Answer.YES_TO_ACTIVITIES and
+            Answer.HIKING in self.survey.Q5['yes_choices'] and
+            Answer.BIKING in self.survey.Q5['yes_choices']
         ):
             return text.YES_HIKING_BIKING
 
         elif (
-                self.survey.Q5['choice'] == Answer.YES_TO_ACTIVITIES and
-                Answer.SWIMMING in self.survey.Q5['yes_choices'] and
-                Answer.PICNIC in self.survey.Q5['yes_choices']
+            self.survey.Q5['choice'] == Answer.YES_TO_ACTIVITIES and
+            Answer.SWIMMING in self.survey.Q5['yes_choices'] and
+            Answer.PICNIC in self.survey.Q5['yes_choices']
         ):
             return text.YES_SWIMMING_PICNIC
 

@@ -1,12 +1,12 @@
-from report.survey import Survey
 from report.questions import Questions
+from report.survey import Survey
 
 
 class Report:
 
     def __init__(self,
-                 survey: Survey):
-
+                 survey: Survey
+                 ):
         self.survey = survey
         self.questions = Questions(survey=survey)
 
