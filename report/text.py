@@ -140,7 +140,7 @@ class Text:
         'non proident, sunt in culpa qui officia deserunt '
         'mollit anim id est laborum.')
 
-    NO: str = (
+    NO_TO_ACTIVITIES: str = (
         'Nam maximus ANSWER_NO et massa laoreet congue. In facilisis egestas '
         'neque. Nullam ac euismod nibh. ANSWER_NO Aenean pulvinar '
         'lacinia ligula, nec lobortis magna accumsan sed.Duis '
