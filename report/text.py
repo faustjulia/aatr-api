@@ -99,7 +99,7 @@ class Text:
         'tortor a ligula aliquam pharetra. Aenean '
         'et magna enim.'
     )
-    DAY_TIME_AND_NEVER: str = (
+    DAY_TIME_AND_EARLY_MORNING: str = (
         'Lorem ipsum dolor sit amet, consectetur '
         'adipiscing elit. Vestibulum dictum, dui non '
         'auctor tristique, odio sem 3. Question - '
@@ -140,7 +140,7 @@ class Text:
         'non proident, sunt in culpa qui officia deserunt '
         'mollit anim id est laborum.')
 
-    NO_TO_ACTIVITIES: str = (
+    I_DONT_LIKE_ACTIVITIES: str = (
         'Nam maximus ANSWER_NO et massa laoreet congue. In facilisis egestas '
         'neque. Nullam ac euismod nibh. ANSWER_NO Aenean pulvinar '
         'lacinia ligula, nec lobortis magna accumsan sed.Duis '

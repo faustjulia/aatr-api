@@ -20,6 +20,8 @@ answers_dict: Dict = {
     }
 }
 
+text = Text()
+
 
 class TestingQuestions(unittest.TestCase):
 
@@ -33,7 +35,7 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
 
         result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, Text.YES_HIKING_BIKING)
+        self.assertEqual(result, text.YES_HIKING_BIKING)
 
     def test_question_5_answer_2(self):
         answers: Dict = answers_dict.copy()
@@ -45,7 +47,7 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
 
         result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, Text.YES_SWIMMING_PICNIC)
+        self.assertEqual(result, text.YES_SWIMMING_PICNIC)
 
     def test_question_5_answer_3(self):
         answers: Dict = answers_dict.copy()
@@ -57,7 +59,7 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
 
         result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, Text.YES_AND_ANY_OTHER_CASE)
+        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
     def test_question_5_answer_4(self):
         answers: Dict = answers_dict.copy()
@@ -69,7 +71,7 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
 
         result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, Text.YES_AND_ANY_OTHER_CASE)
+        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
     def test_question_5_answer_5(self):
         answers: Dict = answers_dict.copy()
@@ -81,7 +83,7 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
 
         result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, Text.YES_AND_ANY_OTHER_CASE)
+        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
     def test_question_5_answer_6(self):
         answers: Dict = answers_dict.copy()
@@ -93,7 +95,31 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
 
         result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, Text.YES_AND_ANY_OTHER_CASE)
+        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
+
+    def test_question_5_answer_7(self):
+        answers: Dict = answers_dict.copy()
+        answers['Q5']['choice'] = Answer.NO_TO_ACTIVITIES
+        answers['Q5']['yes_choices'] = None
+        survey = Survey(
+            answers=answers
+        )
+        questions = Questions(survey=survey)
+
+        result: str = questions.overall_I_like_activities()
+        self.assertEqual(result, text.I_DONT_LIKE_ACTIVITIES)
+
+    def test_question_5_answer_8(self):
+        answers: Dict = answers_dict.copy()
+        answers['Q5']['choice'] = Answer.I_DONT_KNOW_TO_ACTIVITIES
+        answers['Q5']['yes_choices'] = None
+        survey = Survey(
+            answers=answers
+        )
+        questions = Questions(survey=survey)
+
+        result: str = questions.overall_I_like_activities()
+        self.assertEqual(result, text.I_DONT_KNOW)
 
 
 if __name__ == '__main__':

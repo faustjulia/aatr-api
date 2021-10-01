@@ -47,6 +47,9 @@ class Questions:
 
     def when_do_you_like_to_exercise(self) -> str:
 
+        if Answer.NEVER in self.survey.Q3:
+            return text.ANY_OTHER_CASE
+
         if (
             Answer.EVENING in self.survey.Q3 and
             Answer.NIGHT in self.survey.Q3 and
@@ -56,9 +59,9 @@ class Questions:
 
         elif (
             Answer.DAY_TIME in self.survey.Q3 and
-            Answer.NEVER in self.survey.Q3
+            Answer.EARLY_MORNING in self.survey.Q3
         ):
-            return Text.DAY_TIME_AND_NEVER
+            return Text.DAY_TIME_AND_EARLY_MORNING
 
         elif (
             Answer.EVENING in self.survey.Q3 or
@@ -70,14 +73,17 @@ class Questions:
         else:
             return text.ANY_OTHER_CASE
 
-    def what_is_your_age_group(self) -> str:
+    def what_is_your_age_group(self,
+                               AGE_OR_BIRTHDATE) -> str:
 
-        if '-' in Answer.AGE_OR_BIRTHDATE:
-            year, month, day = map(int, Answer.AGE_OR_BIRTHDATE.split('-'))
+        self.AGE_OR_BIRTHDATE = AGE_OR_BIRTHDATE
+
+        if '-' in str(AGE_OR_BIRTHDATE):
+            year, month, day = map(int, AGE_OR_BIRTHDATE.split('-'))
             date1 = datetime.date(year, month, day)
             AGE: int = get_age(date1)
         else:
-            AGE: int = int(Answer.AGE_OR_BIRTHDATE)
+            AGE: int = int(AGE_OR_BIRTHDATE)
 
         if AGE >= 60:
             return text.old_adulthood(age=AGE)
@@ -89,7 +95,7 @@ class Questions:
     def overall_I_like_activities(self) -> str:
 
         if self.survey.Q5['choice'] == Answer.NO_TO_ACTIVITIES:
-            return text.NO
+            return text.I_DONT_LIKE_ACTIVITIES
 
         elif self.survey.Q5['choice'] == Answer.I_DONT_KNOW_TO_ACTIVITIES:
             return text.I_DONT_KNOW

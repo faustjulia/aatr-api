@@ -17,7 +17,7 @@ class Answer:
     NEVER: str = 'I prefer not to exercise'
 
     # birthday must be in YYYY-MM-DD format
-    AGE_OR_BIRTHDATE: str = '1998-03-11'
+    AGE_OR_BIRTHDATE: str = ''
 
     YES_TO_ACTIVITIES: str = 'Yes'
     NO_TO_ACTIVITIES: str = 'No'

@@ -110,7 +110,7 @@ class TestingQuestions(unittest.TestCase):
 
     def test_question_3_answer_8(self):
         answers: Dict = answers_dict.copy()
-        answers.update({'Q3': [Answer.DAY_TIME, Answer.NEVER]})
+        answers.update({'Q3': [Answer.DAY_TIME, Answer.EARLY_MORNING]})
 
         survey = Survey(
             answers=answers
@@ -118,7 +118,7 @@ class TestingQuestions(unittest.TestCase):
 
         questions = Questions(survey=survey)
         result: str = questions.when_do_you_like_to_exercise()
-        self.assertEqual(result, Text.DAY_TIME_AND_NEVER)
+        self.assertEqual(result, Text.DAY_TIME_AND_EARLY_MORNING)
 
     def test_question_3_answer_9(self):
         answers: Dict = answers_dict.copy()
