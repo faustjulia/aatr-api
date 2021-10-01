@@ -25,7 +25,8 @@ class TestingQuestions(unittest.TestCase):
 
     def test_question_3_answer_1(self):
         answers: Dict = answers_dict.copy()
-        answers.update({'Q3': Answer.EARLY_MORNING})
+        answers.update(
+            {'Q3': [Answer.EARLY_MORNING, Answer.EVENING, Answer.NIGHT]})
 
         survey = Survey(
             answers=answers
@@ -45,9 +46,21 @@ class TestingQuestions(unittest.TestCase):
 
         questions = Questions(survey=survey)
         result: str = questions.when_do_you_like_to_exercise()
-        self.assertEqual(result, Text.MORNING_AND_EVENING_AND_NIGHT)
+        self.assertEqual(result, Text.MORNING_OR_EVENING_OR_NIGHT)
 
     def test_question_3_answer_3(self):
+        answers: Dict = answers_dict.copy()
+        answers.update({'Q3': Answer.EARLY_MORNING})
+
+        survey = Survey(
+            answers=answers
+        )
+
+        questions = Questions(survey=survey)
+        result: str = questions.when_do_you_like_to_exercise()
+        self.assertEqual(result, Text.MORNING_OR_EVENING_OR_NIGHT)
+
+    def test_question_3_answer_4(self):
         answers: Dict = answers_dict.copy()
         answers.update({'Q3': Answer.NIGHT})
 
@@ -57,23 +70,47 @@ class TestingQuestions(unittest.TestCase):
 
         questions = Questions(survey=survey)
         result: str = questions.when_do_you_like_to_exercise()
-        self.assertEqual(result, Text.MORNING_AND_EVENING_AND_NIGHT)
-
-    def test_question_3_answer_4(self):
-        answers: Dict = answers_dict.copy()
-        answers.update({'Q3': Answer.DAY_TIME})
-
-        survey = Survey(
-            answers=answers
-        )
-
-        questions = Questions(survey=survey)
-        result: str = questions.when_do_you_like_to_exercise()
-        self.assertEqual(result, Text.DAY_TIME_AND_NEVER)
+        self.assertEqual(result, Text.MORNING_OR_EVENING_OR_NIGHT)
 
     def test_question_3_answer_5(self):
         answers: Dict = answers_dict.copy()
-        answers.update({'Q3': Answer.NEVER})
+        answers.update({'Q3': [Answer.NIGHT, Answer.EARLY_MORNING]})
+
+        survey = Survey(
+            answers=answers
+        )
+
+        questions = Questions(survey=survey)
+        result: str = questions.when_do_you_like_to_exercise()
+        self.assertEqual(result, Text.MORNING_OR_EVENING_OR_NIGHT)
+
+    def test_question_3_answer_6(self):
+        answers: Dict = answers_dict.copy()
+        answers.update({'Q3': [Answer.NIGHT, Answer.EVENING]})
+
+        survey = Survey(
+            answers=answers
+        )
+
+        questions = Questions(survey=survey)
+        result: str = questions.when_do_you_like_to_exercise()
+        self.assertEqual(result, Text.MORNING_OR_EVENING_OR_NIGHT)
+
+    def test_question_3_answer_7(self):
+        answers: Dict = answers_dict.copy()
+        answers.update({'Q3': [Answer.EVENING, Answer.EARLY_MORNING]})
+
+        survey = Survey(
+            answers=answers
+        )
+
+        questions = Questions(survey=survey)
+        result: str = questions.when_do_you_like_to_exercise()
+        self.assertEqual(result, Text.MORNING_OR_EVENING_OR_NIGHT)
+
+    def test_question_3_answer_8(self):
+        answers: Dict = answers_dict.copy()
+        answers.update({'Q3': [Answer.DAY_TIME, Answer.NEVER]})
 
         survey = Survey(
             answers=answers
@@ -82,6 +119,18 @@ class TestingQuestions(unittest.TestCase):
         questions = Questions(survey=survey)
         result: str = questions.when_do_you_like_to_exercise()
         self.assertEqual(result, Text.DAY_TIME_AND_NEVER)
+
+    def test_question_3_answer_9(self):
+        answers: Dict = answers_dict.copy()
+        answers.update({'Q3': [Answer.NEVER]})
+
+        survey = Survey(
+            answers=answers
+        )
+
+        questions = Questions(survey=survey)
+        result: str = questions.when_do_you_like_to_exercise()
+        self.assertEqual(result, Text.ANY_OTHER_CASE)
 
 
 if __name__ == '__main__':
