@@ -4,29 +4,16 @@ from typing import Dict
 from report.answer import Answer
 from report.questions import Questions
 from report.survey import Survey
+from report.tests.common.base import TestCommon
 from report.text import Text
-
-answers_dict: Dict = {
-    'Q1': Answer.AEROBICS,
-    'Q2': Answer.HAVE_A_GOOD_TIME,
-    'Q3': [Answer.DAY_TIME, Answer.NEVER],
-    'Q4': Answer.AGE_OR_BIRTHDATE,
-    'Q5': {
-        'choice': Answer.YES_TO_ACTIVITIES,
-        'yes_choices': [
-            Answer.HIKING,
-            Answer.BIKING
-        ]
-    }
-}
 
 text = Text()
 
 
-class TestingQuestions(unittest.TestCase):
+class TestOverallILikeActivities(TestCommon):
 
-    def test_question_5_answer_1(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_yes_hiking_biking(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = [Answer.HIKING, Answer.BIKING]
         survey = Survey(
@@ -37,8 +24,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.YES_HIKING_BIKING)
 
-    def test_question_5_answer_2(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_yes_swimming_picnic(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = [Answer.SWIMMING, Answer.PICNIC]
         survey = Survey(
@@ -49,8 +36,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.YES_SWIMMING_PICNIC)
 
-    def test_question_5_answer_3(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_yes_swimming_biking(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = [Answer.SWIMMING, Answer.BIKING]
         survey = Survey(
@@ -61,8 +48,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
-    def test_question_5_answer_4(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_yes_hiking_picnic(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = [Answer.PICNIC, Answer.HIKING]
         survey = Survey(
@@ -73,8 +60,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
-    def test_question_5_answer_5(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_yes_picnic_biking(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = [Answer.PICNIC, Answer.BIKING]
         survey = Survey(
@@ -85,8 +72,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
-    def test_question_5_answer_6(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_yes_swimming_hiking(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = [Answer.SWIMMING, Answer.HIKING]
         survey = Survey(
@@ -97,8 +84,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
 
-    def test_question_5_answer_7(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_no(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.NO_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = None
         survey = Survey(
@@ -109,8 +96,8 @@ class TestingQuestions(unittest.TestCase):
         result: str = questions.overall_I_like_activities()
         self.assertEqual(result, text.I_DONT_LIKE_ACTIVITIES)
 
-    def test_question_5_answer_8(self):
-        answers: Dict = answers_dict.copy()
+    def test_answer_I_dont_know(self):
+        answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.I_DONT_KNOW_TO_ACTIVITIES
         answers['Q5']['yes_choices'] = None
         survey = Survey(

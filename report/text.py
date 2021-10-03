@@ -13,7 +13,7 @@ class Text:
         'lectus, mollis blandit ipsum. Phasellus maximus finibus '
         'arcu a tincidunt.')
 
-    BALANCE: str = (
+    NO_ACTIVITY: str = (
         'Donec tincidunt 2. Question - ANSWER_2 metus nec dui '
         'tristique malesuada. Praesent lectus nunc, accumsan vel '
         'justo in, imperdiet faucibus leo. Nullam efficitur massa '
@@ -21,7 +21,7 @@ class Text:
         'eget auctor lectus, mollis blandit ipsum. Phasellus '
         'maximus finibus arcu a tincidunt.')
 
-    FLEXIBILITY: str = (
+    STRENGTH: str = (
         '1. Question - ANSWER_3 risus nec ultricies rutrum.'
         ' Mauris bibendum lectus risus, non porttitor urna '
         'interdum quis.Suspendisse quis risus scelerisque, '
@@ -33,7 +33,7 @@ class Text:
         'euismod in egestas vel, ullamcorper ac sapien. '
         'In porttitor elementum faucibus.')
 
-    STRENGTH_AND_NO_ACTIVITY: str = (
+    FLEXIBILITY_AND_BALANCE: str = (
         '1. Question - ANSWER_4 or ANSWER_5 '
         'Mauris urna nunc, eleifend id sapien eget, '
         'tincidunt venenatis risus. Vestibulum imperdiet '

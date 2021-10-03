@@ -25,12 +25,12 @@ class Questions:
 
         if self.survey.Q1 == Answer.AEROBICS:
             return text.AEROBICS
-        elif self.survey.Q1 == Answer.BALANCE:
-            return text.BALANCE
-        elif self.survey.Q1 == Answer.FLEXIBILITY:
-            return text.FLEXIBILITY
+        elif self.survey.Q1 == Answer.NO_ACTIVITY:
+            return text.NO_ACTIVITY
+        elif self.survey.Q1 == Answer.STRENGTH:
+            return text.STRENGTH
         else:
-            return text.STRENGTH_AND_NO_ACTIVITY
+            return text.FLEXIBILITY_AND_BALANCE
 
     def what_is_the_main_goal_of_exercising(self) -> str:
 
@@ -73,17 +73,14 @@ class Questions:
         else:
             return text.ANY_OTHER_CASE
 
-    def what_is_your_age_group(self,
-                               AGE_OR_BIRTHDATE) -> str:
+    def what_is_your_age_group(self) -> str:
 
-        self.AGE_OR_BIRTHDATE = AGE_OR_BIRTHDATE
-
-        if '-' in str(AGE_OR_BIRTHDATE):
-            year, month, day = map(int, AGE_OR_BIRTHDATE.split('-'))
+        if '-' in str(self.survey.Q4):
+            year, month, day = map(int, self.survey.Q4.split('-'))
             date1 = datetime.date(year, month, day)
             AGE: int = get_age(date1)
         else:
-            AGE: int = int(AGE_OR_BIRTHDATE)
+            AGE: int = int(self.survey.Q4)
 
         if AGE >= 60:
             return text.old_adulthood(age=AGE)
