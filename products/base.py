@@ -1,3 +1,5 @@
+from typing import Dict
+
 import requests
 
 
@@ -6,6 +8,14 @@ import requests
 # Beach towel = 60
 # Sun glasses = 59
 # Water bottle = 60
+
+# data = response.json()
+# print(data)
+#
+# print(response.json()['results'][0].get('title'))
+# print(response.json()['results'][0].get('image'))
+# print(response.json()['results'][0].get('full_link'))
+# print(response.json()['results'][0].get('prices'))
 
 # TODO: Exercise 1: A proper request following all the previous instructions
 # 1. Add variable type to the 'response'
@@ -28,40 +38,47 @@ import requests
 # 1. Create a new 'self.url' variable in '__init__' method (and use it in code)
 # 2. Create a new 'self.headers' variable in '__init__' method (and use it in code)
 
+# TODO: Exercise 4: Add 'timeout' (in case we can't reach the API url)
+# 1. Create a separate method called '.get()' in 'ProductRequest' class
+# 2. Adjust '_request' method to use 'getattr()' and '**kwargs' (see the video)
+# 3. Add new variable called 'self.timeout' to __init__ method (see the video)
+# 4. Update 'kwargs' with 'self.timeout' in '_request' method (see the video)
+# 5. Adjust '.get()' method to use '_request' method (see the video)
 
 class ProductRequest:
 
-    def __init__(
-        self,
-        headers={
+    def __init__(self):
+        self.url = 'https://amazon-products1.p.rapidapi.com/search'
+        self.headers = {
             'x-rapidapi-host': 'amazon-products1.p.rapidapi.com',
             'x-rapidapi-key': '053e00a14fmsh0a56e00fbabbe95p1438bajsn8d4c446bdd86'
-        },
+        }
+        self.timeout = 20
 
-    ):
-        self.headers = headers
+    def _request(self,
+                 method: str,
+                 **kwargs) -> requests.Response:
+        kwargs.update({
+            'timeout': self.timeout
+        })
+        return getattr(requests, method)(**kwargs)
 
-    def _request(self) -> requests.Response:
-        response: requests.models.Response = requests.get(
-
-            url='https://amazon-products1.p.rapidapi.com/search',
-
+    def get(self,
+            params: Dict) -> requests.Response:
+        return self._request(
+            method='get',
+            url=self.url,
             headers=self.headers,
-            params={
-                'country': 'US',
-                'query': 'Water bottle',
-                'page': '1'
-            }
+            params=params
         )
 
-        print(response)
 
-        # data = response.json()
-        # print(data)
-        # 
-        # print(response.json()['results'][0].get('title'))
-        # print(response.json()['results'][0].get('image'))
-        # print(response.json()['results'][0].get('full_link'))
-        # print(response.json()['results'][0].get('prices'))
+data: Dict = {
+    'country': 'US',
+    'query': 'Water bottle',
+    'page': '1'
+}
 
-        return response
+request = ProductRequest()
+res: requests.Response = request.get(params=data)
+print(res)
