@@ -1,5 +1,5 @@
 import unittest
-from typing import Dict
+from typing import Dict, List
 
 from report.answer import Answer
 from report.questions import Questions
@@ -39,43 +39,18 @@ class TestOverallILikeActivities(TestCommon):
     def test_answer_yes_swimming_biking(self):
         answers: Dict = self.test_answers.copy()
         answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
-        answers['Q5']['yes_choices'] = [Answer.SWIMMING, Answer.BIKING]
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
 
-        result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
+        test_answers: List = [
+            [Answer.SWIMMING, Answer.BIKING],
+            [Answer.PICNIC, Answer.HIKING],
+            [Answer.PICNIC, Answer.BIKING],
+            [Answer.SWIMMING, Answer.HIKING]
 
-    def test_answer_yes_hiking_picnic(self):
-        answers: Dict = self.test_answers.copy()
-        answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
-        answers['Q5']['yes_choices'] = [Answer.PICNIC, Answer.HIKING]
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
+        ]
+        for i in test_answers:
+            for answer in i:
+                answers['Q5']['yes_choices'] = answer
 
-        result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
-
-    def test_answer_yes_picnic_biking(self):
-        answers: Dict = self.test_answers.copy()
-        answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
-        answers['Q5']['yes_choices'] = [Answer.PICNIC, Answer.BIKING]
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
-
-        result: str = questions.overall_I_like_activities()
-        self.assertEqual(result, text.YES_AND_ANY_OTHER_CASE)
-
-    def test_answer_yes_swimming_hiking(self):
-        answers: Dict = self.test_answers.copy()
-        answers['Q5']['choice'] = Answer.YES_TO_ACTIVITIES
-        answers['Q5']['yes_choices'] = [Answer.SWIMMING, Answer.HIKING]
         survey = Survey(
             answers=answers
         )

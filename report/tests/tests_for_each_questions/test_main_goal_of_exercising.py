@@ -1,5 +1,5 @@
 import unittest
-from typing import Dict
+from typing import Dict, List
 
 from report.answer import Answer
 from report.questions import Questions
@@ -12,19 +12,14 @@ class TestMainGoalOfExercising(TestCommon):
 
     def test_answer_have_a_good_time(self):
         answers: Dict = self.test_answers.copy()
-        answers.update({'Q2': Answer.HAVE_A_GOOD_TIME})
-
-        survey = Survey(
-            answers=answers
-        )
-
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_the_main_goal_of_exercising()
-        self.assertEqual(result, Text.HAVE_A_GOOD_TIME_OR_BE_HEALTHY)
-
-    def test_answer_be_healthy(self):
-        answers: Dict = self.test_answers.copy()
-        answers.update({'Q2': Answer.BE_HEALTHY})
+        test_answers: List = [
+            [Answer.HAVE_A_GOOD_TIME],
+            [Answer.BE_HEALTHY],
+            [Answer.HAVE_A_GOOD_TIME, Answer.BE_HEALTHY]
+        ]
+        for i in test_answers:
+            for answer in i:
+                answers['Q2'] = answer
 
         survey = Survey(
             answers=answers
@@ -36,19 +31,14 @@ class TestMainGoalOfExercising(TestCommon):
 
     def test_answer_loose_weight(self):
         answers: Dict = self.test_answers.copy()
-        answers.update({'Q2': Answer.LOOSE_WEIGHT})
-
-        survey = Survey(
-            answers=answers
-        )
-
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_the_main_goal_of_exercising()
-        self.assertEqual(result, Text.LOOSE_WEIGHT_OR_NO_EXERCISE)
-
-    def test_answer_I_dont_exercise(self):
-        answers: Dict = self.test_answers.copy()
-        answers.update({'Q2': Answer.I_DONT_EXERCISE})
+        test_answers: List = [
+            [Answer.LOOSE_WEIGHT],
+            [Answer.I_DONT_EXERCISE],
+            [Answer.LOOSE_WEIGHT, Answer.I_DONT_EXERCISE]
+        ]
+        for i in test_answers:
+            for answer in i:
+                answers['Q2'] = answer
 
         survey = Survey(
             answers=answers
