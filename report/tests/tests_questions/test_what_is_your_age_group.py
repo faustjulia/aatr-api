@@ -17,16 +17,16 @@ class TestWhatIsYourAgeGroup(TestCommon):
         for answer in test_answers:
             answers['Q4'] = answer
 
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
+            survey = Survey(
+                answers=answers
+            )
+            questions = Questions(survey=survey)
 
-        result: str = questions.what_is_your_age_group()
-        self.assertEqual(
-            result,
-            text.young_adult(age=23)
-        )
+            result: str = questions.what_is_your_age_group()
+            self.assertEqual(
+                result,
+                text.young_adult(age=23)
+            )
 
     def test_middle_age(self):
         answers: Dict = self.test_answers.copy()
@@ -51,16 +51,16 @@ class TestWhatIsYourAgeGroup(TestCommon):
         for answer in test_answers:
             answers['Q4'] = answer
 
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
+            survey = Survey(
+                answers=answers
+            )
+            questions = Questions(survey=survey)
 
-        result: str = questions.what_is_your_age_group()
-        self.assertEqual(
-            result,
-            text.old_adulthood(age=71)
-        )
+            result: str = questions.what_is_your_age_group()
+            self.assertEqual(
+                result,
+                text.old_adulthood(age=71)
+            )
 
 
 if __name__ == '__main__':

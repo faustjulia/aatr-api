@@ -21,13 +21,13 @@ class TestMainGoalOfExercising(TestCommon):
             for answer in i:
                 answers['Q2'] = answer
 
-        survey = Survey(
-            answers=answers
-        )
+            survey = Survey(
+                answers=answers
+            )
 
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_the_main_goal_of_exercising()
-        self.assertEqual(result, Text.HAVE_A_GOOD_TIME_OR_BE_HEALTHY)
+            questions = Questions(survey=survey)
+            result: str = questions.what_is_the_main_goal_of_exercising()
+            self.assertEqual(result, Text.HAVE_A_GOOD_TIME_OR_BE_HEALTHY)
 
     def test_answer_loose_weight(self):
         answers: Dict = self.test_answers.copy()
@@ -40,13 +40,13 @@ class TestMainGoalOfExercising(TestCommon):
             for answer in i:
                 answers['Q2'] = answer
 
-        survey = Survey(
-            answers=answers
-        )
+            survey = Survey(
+                answers=answers
+            )
 
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_the_main_goal_of_exercising()
-        self.assertEqual(result, Text.LOOSE_WEIGHT_OR_NO_EXERCISE)
+            questions = Questions(survey=survey)
+            result: str = questions.what_is_the_main_goal_of_exercising()
+            self.assertEqual(result, Text.LOOSE_WEIGHT_OR_NO_EXERCISE)
 
 
 if __name__ == '__main__':

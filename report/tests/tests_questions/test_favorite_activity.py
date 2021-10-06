@@ -57,12 +57,12 @@ class TestFavoriteActivity(TestCommon):
             for answer in i:
                 answers['Q1'] = answer
 
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_your_favorite_activity()
-        self.assertEqual(result, Text.FLEXIBILITY_AND_BALANCE)
+            survey = Survey(
+                answers=answers
+            )
+            questions = Questions(survey=survey)
+            result: str = questions.what_is_your_favorite_activity()
+            self.assertEqual(result, Text.FLEXIBILITY_AND_BALANCE)
 
 
 if __name__ == '__main__':
