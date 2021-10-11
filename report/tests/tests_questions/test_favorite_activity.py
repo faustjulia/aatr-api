@@ -46,16 +46,17 @@ class TestFavoriteActivity(TestCommon):
         result: str = questions.what_is_your_favorite_activity()
         self.assertEqual(result, Text.STRENGTH)
 
-    def test_answer_balance(self):
+    def test_answer_flexibility_and_balance(self):
         answers: Dict = self.test_answers.copy()
         test_answers: List = [
             [Answer.FLEXIBILITY],
             [Answer.BALANCE],
             [Answer.FLEXIBILITY, Answer.BALANCE]
         ]
-        for i in test_answers:
-            for answer in i:
-                answers['Q1'] = answer
+        for answer in test_answers:
+            answers['Q1'] = answer
+
+            print("test answer: ", answer)
 
             survey = Survey(
                 answers=answers
