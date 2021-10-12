@@ -10,29 +10,31 @@ class Products:
         self.data = data
         self.amount = amount
 
-    def get(self):
+    def get(self) -> List:
         products: List = []
 
         for product in self.data['results']:
-            title: str = product.get('title')
-            image: str = product.get('image')
-            full_link: str = product.get('full_link')
-            current_price: float = product.get('prices')['current_price']
-            currency: str = product.get('prices')['currency']
 
-            if current_price > -1.0:
+            if len(products) == self.amount:
+                break
 
-                new_dict: Dict = {
-                    'title': title,
-                    'image': image,
-                    'full_link': full_link,
-                    'current_price': current_price,
-                    'currency': currency
-                }
+            if product['prices']['current_price'] == -1.0:
+                continue
 
-                products.append(new_dict)
+            if product['title'] == '':
+                continue
 
-                if len(products) >= self.amount:
-                    break
+            if product['image'] == '':
+                continue
+            elif product['image'].split('.')[-1] != 'jpg':
+                continue
+
+            products.append({
+                'title': product.get('title'),
+                'image': product.get('image'),
+                'full_link': product.get('full_link'),
+                'current_price': product.get('prices')['current_price'],
+                'currency': product.get('prices')['currency']
+            })
 
         return products
