@@ -48,15 +48,10 @@ class TestFavoriteActivity(TestCommon):
 
     def test_answer_flexibility_and_balance(self):
         answers: Dict = self.test_answers.copy()
-        test_answers: List = [
-            [Answer.FLEXIBILITY],
-            [Answer.BALANCE],
-            [Answer.FLEXIBILITY, Answer.BALANCE]
-        ]
+        test_answers: List = [Answer.FLEXIBILITY, Answer.BALANCE]
+
         for answer in test_answers:
             answers['Q1'] = answer
-
-            print("test answer: ", answer)
 
             survey = Survey(
                 answers=answers
