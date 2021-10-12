@@ -47,9 +47,8 @@ class TestOverallILikeActivities(TestCommon):
             [Answer.SWIMMING, Answer.HIKING]
 
         ]
-        for i in test_answers:
-            for answer in i:
-                answers['Q5']['yes_choices'] = answer
+        for answer in test_answers:
+            answers['Q5']['yes_choices'] = answer
 
         survey = Survey(
             answers=answers

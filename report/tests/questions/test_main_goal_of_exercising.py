@@ -20,6 +20,8 @@ class TestMainGoalOfExercising(TestCommon):
         for answer in test_answers:
             answers['Q2'] = answer
 
+            print(answer)
+
             survey = Survey(
                 answers=answers
             )
