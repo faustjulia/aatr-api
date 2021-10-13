@@ -5,7 +5,7 @@ class Products:
 
     def __init__(self,
                  data: Dict,
-                 amount: int):
+                 amount: int = 5):
 
         self.data = data
         self.amount = amount
@@ -20,21 +20,33 @@ class Products:
 
             if product['prices']['current_price'] == -1.0:
                 continue
+            if product['prices']['current_price'] < 5.0:
+                continue
 
             if product['title'] == '':
                 continue
 
             if product['image'] == '':
                 continue
-            elif product['image'].split('.')[-1] != 'jpg':
+            elif product['image'].endswith('.jpg') == False:
+                continue
+
+            if product['full_link'] == '':
+                continue
+            elif 'www.amazon.com' not in product['full_link']:
+                continue
+
+            if product['prices']['currency'] == '':
+                continue
+            elif product['prices']['currency'] != '$':
                 continue
 
             products.append({
-                'title': product.get('title'),
-                'image': product.get('image'),
-                'full_link': product.get('full_link'),
-                'current_price': product.get('prices')['current_price'],
-                'currency': product.get('prices')['currency']
+                'title': product['title'],
+                'image': product['image'],
+                'full_link': product['full_link'],
+                'current_price': product['prices']['current_price'],
+                'currency': product['prices']['currency']
             })
 
         return products
