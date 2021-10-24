@@ -3,9 +3,11 @@ from typing import Dict, List
 
 class Products:
 
-    def __init__(self,
-                 data: Dict,
-                 amount: int = 5):
+    def __init__(
+        self,
+        data: Dict,
+        amount: int = 5
+    ):
 
         self.data = data
         self.amount = amount
@@ -18,27 +20,17 @@ class Products:
             if len(products) == self.amount:
                 break
 
-            if product['prices']['current_price'] == -1.0:
-                continue
-            if product['prices']['current_price'] < 5.0:
-                continue
-
-            if product['title'] == '':
-                continue
-
-            if product['image'] == '':
-                continue
-            elif product['image'].endswith('.jpg') == False:
-                continue
-
-            if product['full_link'] == '':
-                continue
-            elif 'www.amazon.com' not in product['full_link']:
-                continue
-
-            if product['prices']['currency'] == '':
-                continue
-            elif product['prices']['currency'] != '$':
+            if any([
+                product['prices']['current_price'] == -1.0,
+                product['prices']['current_price'] < 5.0,
+                product['title'] == '',
+                product['image'] == '',
+                product['image'].endswith('.jpg') == False,
+                product['full_link'] == '',
+                'www.amazon.com' not in product['full_link'],
+                product['prices']['currency'] == '',
+                product['prices']['currency'] != '$'
+            ]):
                 continue
 
             products.append({
