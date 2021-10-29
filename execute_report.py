@@ -21,5 +21,4 @@ report = Report(
 )
 
 report_text: str = report.generate()
-
 print(report_text)

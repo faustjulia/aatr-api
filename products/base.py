@@ -2,6 +2,9 @@ from typing import Dict, List
 
 import requests
 
+from products.response import res_data
+
+
 
 class ProductRequest:
 
@@ -13,16 +16,20 @@ class ProductRequest:
         }
         self.timeout = 20
 
-    def _request(self,
-                 method: str,
-                 **kwargs) -> requests.Response:
+    def _request(
+        self,
+        method: str,
+        **kwargs
+    ) -> requests.Response:
         kwargs.update({
             'timeout': self.timeout
         })
         return getattr(requests, method)(**kwargs)
 
-    def get(self,
-            params: Dict) -> requests.Response:
+    def get(
+        self,
+        params: Dict
+    ) -> requests.Response:
         return self._request(
             method='get',
             url=self.url,
@@ -37,23 +44,32 @@ data: Dict = {
     'page': '1'
 }
 
-request = ProductRequest()
-res: requests.Response = request.get(params=data)
-res_data: Dict = res.json()
-print(res)
-print(res_data)
+DEBUG = True
 
+if not DEBUG:
+    request = ProductRequest()
+    res: requests.Response = request.get(params=data)
+    res_data: Dict = res.json()
+    print(res)
+
+# request = ProductRequest()
+# res: requests.Response = request.get(params=data)
+# res_data: Dict = res.json()
+# print(res)
+# print(res_data)
 
 class Products:
 
-    def __init__(self,
-                 data: Dict,
-                 amount: int):
+    def __init__(
+        self,
+        data: Dict,
+        amount: int
+    ):
 
         self.data = data
         self.amount = amount
 
-    def get(self):
+    def get(self) -> List:
         products: List = []
 
         for product in self.data['results']:

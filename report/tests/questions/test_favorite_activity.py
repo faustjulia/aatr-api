@@ -1,5 +1,5 @@
 import unittest
-from typing import Dict
+from typing import Dict, List
 
 from report.answer import Answer
 from report.questions import Questions
@@ -46,28 +46,19 @@ class TestFavoriteActivity(TestCommon):
         result: str = questions.what_is_your_favorite_activity()
         self.assertEqual(result, Text.STRENGTH)
 
-    def test_answer_balance(self):
+    def test_answer_flexibility_and_balance(self):
         answers: Dict = self.test_answers.copy()
-        answers.update({'Q1': Answer.BALANCE})
+        test_answers: List = [Answer.FLEXIBILITY, Answer.BALANCE]
 
-        survey = Survey(
-            answers=answers
-        )
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_your_favorite_activity()
-        self.assertEqual(result, Text.FLEXIBILITY_AND_BALANCE)
+        for answer in test_answers:
+            answers['Q1'] = answer
 
-    def test_answer_flexibility(self):
-        answers: Dict = self.test_answers.copy()
-        answers.update({'Q1': Answer.FLEXIBILITY})
-
-        survey = Survey(
-            answers=answers
-        )
-
-        questions = Questions(survey=survey)
-        result: str = questions.what_is_your_favorite_activity()
-        self.assertEqual(result, Text.FLEXIBILITY_AND_BALANCE)
+            survey = Survey(
+                answers=answers
+            )
+            questions = Questions(survey=survey)
+            result: str = questions.what_is_your_favorite_activity()
+            self.assertEqual(result, Text.FLEXIBILITY_AND_BALANCE)
 
 
 if __name__ == '__main__':
