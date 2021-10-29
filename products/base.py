@@ -5,6 +5,7 @@ import requests
 from products.response import res_data
 
 
+
 class ProductRequest:
 
     def __init__(self):
@@ -30,7 +31,10 @@ class ProductRequest:
         params: Dict
     ) -> requests.Response:
         return self._request(
-            method='get', url=self.url, headers=self.headers, params=params
+            method='get',
+            url=self.url,
+            headers=self.headers,
+            params=params
         )
 
 
@@ -48,8 +52,11 @@ if not DEBUG:
     res_data: Dict = res.json()
     print(res)
 
-print(res_data)
-
+# request = ProductRequest()
+# res: requests.Response = request.get(params=data)
+# res_data: Dict = res.json()
+# print(res)
+# print(res_data)
 
 class Products:
 
