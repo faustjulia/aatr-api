@@ -15,3 +15,5 @@ __pycache__/
 # Distribution / packaging
 .Python
 
+aatr.env
+.env
