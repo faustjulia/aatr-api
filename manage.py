@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
-import os
-import sys
-
 from dotenv import find_dotenv, load_dotenv
 
 load_dotenv(find_dotenv(filename='aatr.env', raise_error_if_not_found=True))
+
+import os
+import sys
 
 
 def main():
