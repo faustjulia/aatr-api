@@ -3,9 +3,10 @@ from typing import Dict
 
 class Survey:
 
-    def __init__(self,
-                 answers: Dict
-                 ):
+    def __init__(
+        self,
+        answers: Dict
+    ):
         self.Q1 = answers['Q1']
         self.Q2 = answers['Q2']
         self.Q3 = answers['Q3']
