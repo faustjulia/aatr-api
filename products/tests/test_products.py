@@ -1,9 +1,13 @@
+import json
 import random
 import unittest
 from typing import Dict, List
 from unittest.mock import patch, Mock
 
 import requests
+from django.test import TestCase
+from rest_framework.response import Response
+from rest_framework.test import APIClient
 
 from products.parse import Products
 from products.request import ProductRequest
@@ -268,3 +272,175 @@ class TestProducts(unittest.TestCase):
 
         for product in products:
             self.assertEqual(product['current_price'], 130.0)
+
+
+class TestSignUpEndpoint(TestCase):
+
+    def test_signup_success(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            path='/api/signup/',
+            data=json.dumps({
+                'name': 'Yuliia Martynenko',
+                'email': 'jules@gmail.com',
+                'password': 'eegwrgewgwe',
+                'terms': True
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            201
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                'detail': 'success'
+            }
+        )
+
+    def test_invalid_email(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            path='/api/signup/',
+            data=json.dumps({
+                'name': 'Yuliia Martynenko',
+                'email': 'invalidemail',
+                'password': 'eegwrgewgwe',
+                'terms': True
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "email": [
+                    "Enter a valid email address."
+                ]
+            }
+        )
+
+    def test_password_less_than_min_length(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            path='/api/signup/',
+            data=json.dumps({
+                'name': 'Yuliia Martynenko',
+                'email': 'jules@gmail.com',
+                'password': '123',
+                'terms': True
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "password": [
+                    "Ensure this field has at least 8 characters."
+                ]
+            }
+        )
+
+    def test_password_more_than_max_length(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            path='/api/signup/',
+            data=json.dumps({
+                'name': 'Yuliia Martynenko',
+                'email': 'jules@gmail.com',
+                'password': '123jwefwegfouheifhbvuhguw',
+                'terms': True
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "password": [
+                    "Ensure this field has no more than 16 characters."
+                ]
+            }
+
+        )
+
+    def test_unaccepted_terms_checkbox(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            path='/api/signup/',
+            data=json.dumps({
+                'name': 'Yuliia Martynenko',
+                'email': 'jules@gmail.com',
+                'password': '123jwefwegfow',
+                'terms': False
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "terms": [
+                    "You must accept terms and conditions."
+                ]
+            }
+
+        )
+
+    def test_email_already_exists(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            path='/api/signup/',
+            data=json.dumps({
+                'name': 'Yuliia Martynenko',
+                'email': 'jules@gmail.com',
+                'password': '123jwefwegfow',
+                'terms': True
+            }),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            400
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "email": [
+                    "This email address is already being used."
+                ]
+            }
+
+        )
