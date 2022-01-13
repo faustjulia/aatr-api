@@ -5,6 +5,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+MAILGUN_API_KEY = os.getenv('MAILGUN_API_KEY')
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
