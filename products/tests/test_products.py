@@ -1,5 +1,6 @@
 import json
 import random
+import typing
 import unittest
 from typing import Dict, List
 from unittest.mock import patch, Mock
@@ -451,13 +452,13 @@ class TestSignUpEndpoint(TestCase):
         )
 
     def test_failed_to_send_email(self):
+        client: APIClient = APIClient()
+
         mocked_response = patch.object(
             target=requests,
             attribute='post',
             side_effect=HTTPError
         )
-
-        client: APIClient = APIClient()
 
         with mocked_response:
             res: Response = client.post(
@@ -514,14 +515,14 @@ class TestSignUpEndpoint(TestCase):
             ]
         )
 
-        with mocked_response:
-            sign_up_data = {
-                'name': 'Yuliia Martynenko',
-                'email': 'julia.faust1103@gmail.com',
-                'password': '123jwefwegfow',
-                'terms': True
-            }
+        sign_up_data: typing.Dict = {
+            'name': 'Yuliia Martynenko',
+            'email': 'julia.faust1103@gmail.com',
+            'password': '123jwefwegfow',
+            'terms': True
+        }
 
+        with mocked_response:
             res: Response = client.post(
                 path='/api/signup/',
                 data=json.dumps(sign_up_data),

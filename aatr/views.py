@@ -11,7 +11,7 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
 
-from aatr.api.models import User
+from aatr.api.models import User as UserData
 from aatr.api.serializers import SignupSerizlizer
 from aatr.settings import MAILGUN_API_KEY
 
@@ -28,7 +28,7 @@ def get_sample(r: HttpRequest) -> HttpResponse:
 
 
 @api_view(['POST'])
-@atomic()
+@atomic
 def signup_endpoint(request: HttpRequest) -> JsonResponse:
     signup_data: typing.Dict = json.loads(request.body)
 
@@ -39,45 +39,61 @@ def signup_endpoint(request: HttpRequest) -> JsonResponse:
 
     if terms == False:
         raise serializers.ValidationError({
-            "terms": [
-                "You must accept terms and conditions."
+            'terms': [
+                'You must accept terms and conditions.'
             ]
         })
 
-    users = User.objects.filter(email=serializer.data['email'])
+    user_exists: bool = (
+        UserData.objects.filter(
+            email=serializer.data['email'].lower()
+        ).exists()
+    )
 
-    if users.exists() == True:
+    if user_exists:
         raise serializers.ValidationError({
-            "email": [
-                "This email address is already being used."
+            'email': [
+                'This email address is already being used.'
             ]
         })
 
-    user: User = User.objects.create_user(
-        email=serializer.data['email'],
+    UserData.objects.create_user(
+        email=serializer.data['email'].lower(),
         name=serializer.data['name'],
         terms=serializer.data['terms'],
         password=serializer.data['password']
     )
 
+    class MailgunAPI:
+        url = 'https://api.mailgun.net/v3/yuliiamartynenko.com'
+
+    class SignupTemplate:
+        subject = 'Sign Up Confirmation'
+        template = 'sign_up'
+
     try:
         res = requests.post(
-            'https://api.mailgun.net/v3/yuliiamartynenko.com/messages',
+            f'{MailgunAPI.url}/messages',
             auth=('api', MAILGUN_API_KEY),
             data={'from': 'Mentoring <mail@yuliiamartynenko.com>',
                   'to': serializer.data['email'],
-                  'subject': 'Alert, Your Payment Is Due',
-                  'template': 'alert',
+                  'subject': SignupTemplate.subject,
+                  'template': SignupTemplate.template,
                   })
 
         res.raise_for_status()
+        sent = True
 
-        return JsonResponse(
-            status=201,
-            data={
-                'id': '<20220113195830.0f9bc6de9b894717@yuliiamartynenko.com>',
-                'message': 'Queued. Thank you.'}
-        )
+    except requests.HTTPError as e:
+        print(f'Exception: {e}', flush=True)
+        sent = False
 
-    except:
+    if not sent:
         raise ServiceUnavailable()
+
+    return JsonResponse(
+        status=201,
+        data={
+            'id': '<20220113195830.0f9bc6de9b894717@yuliiamartynenko.com>',
+            'message': 'Queued. Thank you.'}
+    )
