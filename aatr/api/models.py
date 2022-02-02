@@ -41,3 +41,24 @@ class User(AbstractBaseUser, ProjectModel):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+
+from aatr.api.common.utils import gen_session_token
+
+
+class Session(ProjectModel):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='sessions',
+    )
+
+    token = models.TextField(
+        default=gen_session_token,
+        unique=True,
+    )
+
+    last_active = models.DateTimeField(
+        auto_now_add=True,
+        db_index=True,
+    )

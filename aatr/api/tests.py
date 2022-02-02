@@ -4,6 +4,8 @@ from django.test import TestCase
 from rest_framework.response import Response
 from rest_framework.test import APIClient
 
+from aatr.api.models import User
+
 
 class TestSignin(TestCase):
 
@@ -123,6 +125,37 @@ class TestSignin(TestCase):
         signin_data = {
             'email': 'jules@gmail.com',
             'password': 'CoolStuffYo'
+        }
+
+        res: Response = client.post(
+            '/api/signin/',
+            data=json.dumps(signin_data),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Incorrect authentication credentials."
+            }
+        )
+
+    def test_user_exists_wrong_password(self):
+        client: APIClient = APIClient()
+
+        User.objects.create_user(
+            email='jules@gmail.com',
+            password='NewPassword123'
+        )
+
+        signin_data = {
+            'email': 'jules@gmail.com',
+            'password': 'NeverUsed'
         }
 
         res: Response = client.post(

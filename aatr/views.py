@@ -23,11 +23,16 @@ def signin_endpoint(request: HttpRequest) -> JsonResponse:
     serializer = SigninSerializer(data=signin_data)
     serializer.is_valid(raise_exception=True)
 
-    users = UserData.objects.filter(email=serializer.data['email'])
+    user_queryset = UserData.objects.filter(email=serializer.data['email'])
+    password = user_queryset.first()
 
-    if users.exists() == False:
+    user_password: bool = password.check_password(
+        raw_password=serializer.data['password']
+    )
+
+    if user_queryset.exists() or user_password == False:
         raise AuthenticationFailed()
-
+    
     return JsonResponse(
         status=201,
         data={
