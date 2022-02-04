@@ -1,11 +1,16 @@
+import datetime
 import json
 import typing
 
 from django.http.request import HttpRequest
 from django.http.response import JsonResponse
+from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import APIException
+from rest_framework.response import Response
 
+from aatr import settings
+from aatr.api import models
 from aatr.api.models import User as UserData
 from aatr.serializers import SigninSerializer
 
@@ -24,45 +29,26 @@ def signin_endpoint(request: HttpRequest) -> JsonResponse:
     serializer.is_valid(raise_exception=True)
 
     user_queryset = UserData.objects.filter(email=serializer.data['email'])
-    password = user_queryset.first()
+    user = user_queryset.first()
 
-    user_password: bool = password.check_password(
+    user_password: bool = user.check_password(
         raw_password=serializer.data['password']
     )
 
-    if user_queryset.exists() or user_password == False:
+    if not user_queryset.exists() or user_password == False:
         raise AuthenticationFailed()
-    
-    return JsonResponse(
-        status=201,
-        data={
-            'detail': 'success'
-        }
+
+    session: models.Session = models.Session.objects.create(user=user)
+
+    response: Response = Response()
+    response.set_cookie(
+        key=settings.SESSION_COOKIE_NAME,
+        expires=timezone.now() + datetime.timedelta(days=365 * 100),
+        value=session.token,
+        secure=True,
+        httponly=True,
+        samesite='Strict'
     )
 
-    # user: models.User = User.objects.create_user(
-    #     email=serializer.data['email']
-    # )
-    #
-    # try:
-    #
-    #     send_email = requests.post(
-    #         "https://api.mailgun.net/v3/yuliiamartynenko.com/messages",
-    #         auth=("api", MAILGUN_API_KEY),
-    #         data={"from": "Mentoring <mail@yuliiamartynenko.com>",
-    #               "to": user.email,
-    #               "subject": "Hello Yuliia Martynenko",
-    #               "template": "sign_up"
-    #               })
-    #
-    #     breakpoint()
-    #
-    #     if send_email.status_code == 200:
-    #         return JsonResponse(
-    #             data={
-    #                 "detail": f"Signup was successful, registration email was sent to {user.email}"
-    #             }
-    #         )
-    #
-    # except:
-    #     raise ServiceUnavailable()
+    return response
+  

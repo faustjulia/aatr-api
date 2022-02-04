@@ -9,32 +9,6 @@ from aatr.api.models import User
 
 class TestSignin(TestCase):
 
-    def test_signin_success(self):
-        client: APIClient = APIClient()
-
-        signin_data = {
-            'email': 'jules@gmail.com',
-            'password': 'CoolBeans123!'
-        }
-
-        res: Response = client.post(
-            '/api/signin/',
-            data=json.dumps(signin_data),
-            content_type='application/json'
-        )
-
-        self.assertEqual(
-            res.status_code,
-            201
-        )
-
-        self.assertEqual(
-            res.json(),
-            {
-                'detail': 'success'
-            }
-        )
-
     def test_empty_email_field(self):
         client: APIClient = APIClient()
 
@@ -174,4 +148,34 @@ class TestSignin(TestCase):
             {
                 "detail": "Incorrect authentication credentials."
             }
+        )
+
+    def test_successful_signin(self):
+        from django.conf import settings
+
+        client: APIClient = APIClient()
+
+        User.objects.create_user(
+            email='jules@gmail.com',
+            password='NewPassword123'
+        )
+
+        signin_data = {
+            'email': 'jules@gmail.com',
+            'password': 'NewPassword123'
+        }
+
+        res: Response = client.post(
+            '/api/signin/',
+            data=json.dumps(signin_data),
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            200
+        )
+
+        self.assertTrue(
+            settings.SESSION_COOKIE_NAME in res.cookies
         )

@@ -1,13 +1,12 @@
-import base64
-import os
-
 from django.core.management import base
+
+from aatr.api.models import Session, User
 
 
 class Command(base.BaseCommand):
 
     def handle(self, *args, **options):
-        print(base64.urlsafe_b64encode(s=os.urandom(64)).decode())
-
-    def gen_token(self, byte_length: int):
-        print(base64.urlsafe_b64encode(s=os.urandom(byte_length)).decode())
+        user = User.objects.create_user(email='jules@gmail.com')
+        user = User.objects.first()
+        session = Session.objects.create(user=user)
+        print('session:', session)
