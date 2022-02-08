@@ -11,7 +11,7 @@ from rest_framework.response import Response
 
 from aatr import settings
 from aatr.api import models
-from aatr.api.models import User as UserData
+from aatr.api.models import User
 from aatr.serializers import SigninSerializer
 
 
@@ -28,14 +28,18 @@ def signin_endpoint(request: HttpRequest) -> JsonResponse:
     serializer = SigninSerializer(data=signin_data)
     serializer.is_valid(raise_exception=True)
 
-    user_queryset = UserData.objects.filter(email=serializer.data['email'])
+    user_queryset = User.objects.filter(email=serializer.data['email'])
     user = user_queryset.first()
 
+    if not user_queryset.exists():
+        raise AuthenticationFailed()
+
+    # AttributeError: 'NoneType' object has no attribute 'check_password'
     user_password: bool = user.check_password(
         raw_password=serializer.data['password']
     )
 
-    if not user_queryset.exists() or user_password == False:
+    if user_password == False:
         raise AuthenticationFailed()
 
     session: models.Session = models.Session.objects.create(user=user)
@@ -51,4 +55,3 @@ def signin_endpoint(request: HttpRequest) -> JsonResponse:
     )
 
     return response
-  
