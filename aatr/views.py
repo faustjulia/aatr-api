@@ -6,23 +6,17 @@ from django.http.request import HttpRequest
 from django.http.response import JsonResponse
 from django.utils import timezone
 from rest_framework.decorators import api_view
-from rest_framework.exceptions import APIException
 from rest_framework.response import Response
 
 from aatr import settings
 from aatr.api import models
+from aatr.api.exceptions.exceptions import AuthenticationFailed
 from aatr.api.models import User
 from aatr.serializers import SigninSerializer
 
 
-class AuthenticationFailed(APIException):
-    status_code = 401
-    default_detail = 'Incorrect authentication credentials.'
-    default_code = 'authentication_failed'
-
-
 @api_view(['POST'])
-def signin_endpoint(request: HttpRequest) -> JsonResponse:
+def signin(request: HttpRequest) -> JsonResponse:
     signin_data: typing.Dict = json.loads(request.body)
 
     serializer = SigninSerializer(data=signin_data)

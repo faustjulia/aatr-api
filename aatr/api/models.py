@@ -3,6 +3,8 @@ import uuid
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.db import models
 
+from aatr.api.common.utils import gen_session_token
+
 
 class TimestampedModel(models.Model):
     class Meta:
@@ -41,9 +43,6 @@ class User(AbstractBaseUser, ProjectModel):
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
-
-
-from aatr.api.common.utils import gen_session_token
 
 
 class Session(ProjectModel):

@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.test import TestCase
 from rest_framework.response import Response
 from rest_framework.test import APIClient
@@ -151,8 +152,6 @@ class TestSignin(TestCase):
         )
 
     def test_successful_signin(self):
-        from django.conf import settings
-
         client: APIClient = APIClient()
 
         User.objects.create_user(
