@@ -18,9 +18,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'corsheaders',
     'rest_framework',
     'django_extensions',
+
     'aatr.api',
 ]
 
@@ -82,6 +84,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+SESSION_COOKIE_NAME = 'AATR_SESSION'
 
 LANGUAGE_CODE = 'en-us'
 
