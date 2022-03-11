@@ -18,13 +18,13 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
-from aatr.views import signin
-from aatr.views import signup
+from aatr.views import signin, signup, signout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/signin/', signin),
-    path('api/signup/', signup)
+    path('api/signup/', signup),
+    path('api/signout/', signout)
 ]
 
 if settings.DEBUG:

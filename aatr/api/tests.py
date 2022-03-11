@@ -458,3 +458,13 @@ class TestSignin(TestCase):
         self.assertTrue(
             settings.SESSION_COOKIE_NAME in res.cookies
         )
+
+
+class TestSignout(TestCase):
+
+    def test_missing_token_cookie(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            '/api/signout',
+        )

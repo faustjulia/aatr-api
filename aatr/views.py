@@ -127,3 +127,15 @@ def signin(request: HttpRequest) -> JsonResponse:
     )
 
     return response
+
+
+@api_view(['POST'])
+def signout(request: HttpRequest) -> JsonResponse:
+    print(request)
+
+    return JsonResponse(
+        status=200,
+        data={
+            'detail': 'Sign out endpoint reached!'
+        }
+    )
