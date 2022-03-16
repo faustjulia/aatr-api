@@ -22,9 +22,9 @@ from aatr.views import signin, signup, signout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/signin/', signin),
-    path('api/signup/', signup),
-    path('api/signout/', signout)
+    path('api/signin/', signin, name='signin'),
+    path('api/signup/', signup, name='signup'),
+    path('api/signout/', signout, name='signout')
 ]
 
 if settings.DEBUG:

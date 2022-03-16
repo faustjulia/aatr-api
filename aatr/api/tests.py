@@ -1,3 +1,4 @@
+import datetime
 import json
 import typing
 from unittest.mock import patch, Mock
@@ -9,7 +10,7 @@ from requests.exceptions import HTTPError
 from rest_framework.response import Response
 from rest_framework.test import APIClient
 
-from aatr.api.models import User
+from aatr.api.models import User, Session
 
 
 class TestSignUpEndpoint(TestCase):
@@ -466,5 +467,104 @@ class TestSignout(TestCase):
         client: APIClient = APIClient()
 
         res: Response = client.post(
-            '/api/signout',
+            '/api/signout/',
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Authorization cookie missing."
+            }
+        )
+
+    def test_session_does_not_exist(self):
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = 'test_cookie_token'
+
+        res: Response = client.post(
+            '/api/signout/',
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Invalid session or inactive user."
+            }
+        )
+
+    def test_session_expired(self):
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = 'session.token'
+
+        test_user = User.objects.create_user(
+            name='yuliia',
+            email='jules@gmail.com',
+            password='NewPassword123',
+            terms=True,
+        )
+
+        Session.objects.create(
+            user=test_user,
+            last_active=datetime.datetime.now() - datetime.timedelta(
+                days=2 * 365)
+
+        )
+
+        res: Response = client.post(
+            '/api/signout/',
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Invalid session or inactive user."
+            }
+        )
+
+    def test_successful_signout(self):
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = 'session.token'
+
+        test_user = User.objects.create_user(
+            name='yuliia',
+            email='jules@gmail.com',
+            password='NewPassword123',
+            terms=True,
+        )
+
+        Session.objects.create(
+            user=test_user,
+            last_active=datetime.datetime.now()
+
+        )
+
+        res: Response = client.post(
+            '/api/signout/',
+        )
+
+        breakpoint()
+
+        self.assertEqual(
+            res.status_code,
+            200
+        )
+
+        self.assertEqual(
+            res.cookies.get('value'),
+            ' '
         )

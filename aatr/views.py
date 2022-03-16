@@ -1,4 +1,4 @@
-import datetime
+import json
 import json
 import typing
 
@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from aatr import settings
 from aatr.api import models
 from aatr.api.exceptions.exceptions import AuthenticationFailed, \
-    ServiceUnavailable
+    ServiceUnavailable, AuthorizationFailed, SessionFailed
 from aatr.api.models import User
 from aatr.api.models import User as UserData
 from aatr.api.serializers import SignupSerizlizer
@@ -119,7 +119,7 @@ def signin(request: HttpRequest) -> JsonResponse:
     response: Response = Response()
     response.set_cookie(
         key=settings.SESSION_COOKIE_NAME,
-        expires=timezone.now() + datetime.timedelta(days=365 * 100),
+        expires=timezone.now() + settings.SESSION_DURATION,
         value=session.token,
         secure=True,
         httponly=True,
@@ -131,11 +131,28 @@ def signin(request: HttpRequest) -> JsonResponse:
 
 @api_view(['POST'])
 def signout(request: HttpRequest) -> JsonResponse:
-    print(request)
+    token: typing.Union[str, None] = request.COOKIES.get(
+        settings.SESSION_COOKIE_NAME)
 
-    return JsonResponse(
-        status=200,
-        data={
-            'detail': 'Sign out endpoint reached!'
-        }
+    if token is None:
+        raise AuthorizationFailed()
+
+    try:
+        session: models.Session = models.Session.objects.get(
+            token=token,
+            is_active=True,
+            last_active__gte=timezone.now() - settings.SESSION_DURATION,
+        )
+    except models.Session.DoesNotExist:
+        raise SessionFailed()
+
+    session.last_active = timezone.now()
+    session.is_active = False
+    session.save()
+
+    response: Response = Response()
+    response.delete_cookie(
+        key=settings.SESSION_COOKIE_NAME,
     )
+
+    return response
