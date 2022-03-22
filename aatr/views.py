@@ -132,17 +132,20 @@ def signin(request: HttpRequest) -> JsonResponse:
 @api_view(['POST'])
 def signout(request: HttpRequest) -> JsonResponse:
     token: typing.Union[str, None] = request.COOKIES.get(
-        settings.SESSION_COOKIE_NAME)
+        settings.SESSION_COOKIE_NAME
+    )
 
     if token is None:
         raise AuthorizationFailed()
 
     try:
+
         session: models.Session = models.Session.objects.get(
             token=token,
             is_active=True,
             last_active__gte=timezone.now() - settings.SESSION_DURATION,
         )
+
     except models.Session.DoesNotExist:
         raise SessionFailed()
 

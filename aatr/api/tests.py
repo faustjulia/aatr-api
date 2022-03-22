@@ -503,9 +503,6 @@ class TestSignout(TestCase):
         )
 
     def test_session_expired(self):
-        client: APIClient = APIClient()
-        client.cookies[settings.SESSION_COOKIE_NAME] = 'session.token'
-
         test_user = User.objects.create_user(
             name='yuliia',
             email='jules@gmail.com',
@@ -513,12 +510,16 @@ class TestSignout(TestCase):
             terms=True,
         )
 
-        Session.objects.create(
-            user=test_user,
-            last_active=datetime.datetime.now() - datetime.timedelta(
-                days=2 * 365)
-
+        session = Session.objects.create(
+            user=test_user
         )
+
+        session.last_active = datetime.datetime.now() - datetime.timedelta(
+            days=2 * 365)
+        session.save()
+
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = session.token
 
         res: Response = client.post(
             '/api/signout/',
@@ -537,9 +538,6 @@ class TestSignout(TestCase):
         )
 
     def test_successful_signout(self):
-        client: APIClient = APIClient()
-        client.cookies[settings.SESSION_COOKIE_NAME] = 'session.token'
-
         test_user = User.objects.create_user(
             name='yuliia',
             email='jules@gmail.com',
@@ -547,24 +545,26 @@ class TestSignout(TestCase):
             terms=True,
         )
 
-        Session.objects.create(
+        session = Session.objects.create(
             user=test_user,
             last_active=datetime.datetime.now()
 
         )
 
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = session.token
+
         res: Response = client.post(
             '/api/signout/',
         )
-
-        breakpoint()
 
         self.assertEqual(
             res.status_code,
             200
         )
+        breakpoint()
 
         self.assertEqual(
-            res.cookies.get('value'),
-            ' '
+            res.cookies.get(settings.SESSION_COOKIE_NAME).value,
+            ""
         )
