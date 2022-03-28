@@ -8,17 +8,23 @@ from django.http.request import HttpRequest
 from django.http.response import JsonResponse
 from django.utils import timezone
 from rest_framework import serializers
+from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from aatr import settings
 from aatr.api import models
+from aatr.api.authentication.api import (
+    get_authorized_session,
+    PrivateAPIAuthentication
+)
 from aatr.api.exceptions.exceptions import AuthenticationFailed, \
-    ServiceUnavailable, AuthorizationFailed, SessionFailed
+    ServiceUnavailable
 from aatr.api.models import User
 from aatr.api.models import User as UserData
-from aatr.api.serializers import SignupSerizlizer
-from aatr.serializers import SigninSerializer
+from aatr.api.serializers.signin import SigninSerializer
+from aatr.api.serializers.signup import SignupSerizlizer
+from aatr.api.serializers.user import CurrentUserSerializer
 from aatr.settings import MAILGUN_API_KEY
 
 
@@ -115,7 +121,7 @@ def signin(request: HttpRequest) -> JsonResponse:
         raise AuthenticationFailed()
 
     session: models.Session = models.Session.objects.create(user=user)
-
+    
     response: Response = Response()
     response.set_cookie(
         key=settings.SESSION_COOKIE_NAME,
@@ -131,23 +137,9 @@ def signin(request: HttpRequest) -> JsonResponse:
 
 @api_view(['POST'])
 def signout(request: HttpRequest) -> JsonResponse:
-    token: typing.Union[str, None] = request.COOKIES.get(
-        settings.SESSION_COOKIE_NAME
+    session: models.Session = get_authorized_session(
+        request=request
     )
-
-    if token is None:
-        raise AuthorizationFailed()
-
-    try:
-
-        session: models.Session = models.Session.objects.get(
-            token=token,
-            is_active=True,
-            last_active__gte=timezone.now() - settings.SESSION_DURATION,
-        )
-
-    except models.Session.DoesNotExist:
-        raise SessionFailed()
 
     session.last_active = timezone.now()
     session.is_active = False
@@ -159,3 +151,12 @@ def signout(request: HttpRequest) -> JsonResponse:
     )
 
     return response
+
+
+class CurrentUserViewSet(viewsets.ViewSet):
+    authentication_classes = [PrivateAPIAuthentication]
+
+    def list(self, request: HttpRequest) -> Response:
+        return Response(
+            CurrentUserSerializer(instance=request.user).data
+        )

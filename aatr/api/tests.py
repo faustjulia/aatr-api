@@ -562,9 +562,125 @@ class TestSignout(TestCase):
             res.status_code,
             200
         )
-        breakpoint()
 
         self.assertEqual(
             res.cookies.get(settings.SESSION_COOKIE_NAME).value,
             ""
+        )
+
+
+class TestCurrentUser(TestCase):
+
+    def test_missing_token_cookie(self):
+        client: APIClient = APIClient()
+
+        res: Response = client.post(
+            '/api/current_user/',
+        )
+
+        breakpoint()
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Authorization cookie missing."
+            }
+        )
+
+    def test_session_does_not_exist(self):
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = 'test_cookie_token'
+
+        res: Response = client.post(
+            '/api/current_user/',
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Invalid session or inactive user."
+            }
+        )
+
+    def test_session_expired(self):
+        test_user = User.objects.create_user(
+            name='yuliia',
+            email='jules@gmail.com',
+            password='NewPassword123',
+            terms=True,
+        )
+
+        session = Session.objects.create(
+            user=test_user
+        )
+
+        session.last_active = datetime.datetime.now() - datetime.timedelta(
+            days=2 * 365)
+        session.save()
+
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = session.token
+
+        res: Response = client.post(
+            '/api/current_user/',
+        )
+
+        self.assertEqual(
+            res.status_code,
+            401
+        )
+
+        self.assertEqual(
+            res.json(),
+            {
+                "detail": "Invalid session or inactive user."
+            }
+        )
+
+    def test_get_current_user(self):
+        test_user = User.objects.create_user(
+            name='yuliia',
+            email='jules@gmail.com',
+            password='NewPassword123',
+            terms=True,
+        )
+
+        session = Session.objects.create(
+            user=test_user
+        )
+
+        client: APIClient = APIClient()
+        client.cookies[settings.SESSION_COOKIE_NAME] = session.token
+
+        res: Response = client.get(
+            path='/api/current_user/',
+            content_type='application/json'
+        )
+
+        self.assertEqual(
+            res.status_code,
+            200
+        )
+
+        self.assertEqual(
+            len(res.json()),
+            2
+        )
+
+        self.assertTrue(
+            'uid' in res.json()
+        )
+
+        self.assertTrue(
+            'name' in res.json()
         )
