@@ -578,8 +578,6 @@ class TestCurrentUser(TestCase):
             '/api/current_user/',
         )
 
-        breakpoint()
-
         self.assertEqual(
             res.status_code,
             401
