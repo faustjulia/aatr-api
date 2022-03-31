@@ -1,10 +1,10 @@
 import typing
 
+from django.conf import settings
 from django.http.request import HttpRequest
 from django.utils import timezone
 from rest_framework import authentication
 
-from aatr import settings
 from aatr.api import models
 from aatr.api.exceptions.exceptions import AuthorizationFailed, SessionFailed
 

@@ -1,8 +1,8 @@
 import json
-import json
 import typing
 
-import requests
+# import requests
+from django.conf import settings
 from django.db.transaction import atomic
 from django.http.request import HttpRequest
 from django.http.response import JsonResponse
@@ -12,20 +12,21 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from aatr import settings
 from aatr.api import models
 from aatr.api.authentication.api import (
     get_authorized_session,
     PrivateAPIAuthentication
 )
-from aatr.api.exceptions.exceptions import AuthenticationFailed, \
-    ServiceUnavailable
+from aatr.api.exceptions.exceptions import AuthenticationFailed
+# from aatr.api.exceptions.exceptions import ServiceUnavailable
 from aatr.api.models import User
 from aatr.api.models import User as UserData
 from aatr.api.serializers.signin import SigninSerializer
 from aatr.api.serializers.signup import SignupSerizlizer
 from aatr.api.serializers.user import CurrentUserSerializer
-from aatr.settings import MAILGUN_API_KEY
+
+
+# from aatr.settings import MAILGUN_API_KEY
 
 
 @api_view(['POST'])
@@ -65,38 +66,39 @@ def signup(request: HttpRequest) -> JsonResponse:
         password=serializer.data['password']
     )
 
-    class MailgunAPI:
-        url = 'https://api.mailgun.net/v3/yuliiamartynenko.com'
-
-    class SignupTemplate:
-        subject = 'Sign Up Confirmation'
-        template = 'sign_up'
-
-    try:
-        res = requests.post(
-            f'{MailgunAPI.url}/messages',
-            auth=('api', MAILGUN_API_KEY),
-            data={'from': 'Mentoring <mail@yuliiamartynenko.com>',
-                  'to': serializer.data['email'],
-                  'subject': SignupTemplate.subject,
-                  'template': SignupTemplate.template,
-                  })
-
-        res.raise_for_status()
-        sent = True
-
-    except requests.HTTPError as e:
-        print(f'Exception: {e}', flush=True)
-        sent = False
-
-    if not sent:
-        raise ServiceUnavailable()
+    # class MailgunAPI:
+    #     url = 'https://api.mailgun.net/v3/yuliiamartynenko.com'
+    #
+    # class SignupTemplate:
+    #     subject = 'Sign Up Confirmation'
+    #     template = 'sign_up'
+    #
+    # try:
+    #     res = requests.post(
+    #         f'{MailgunAPI.url}/messages',
+    #         auth=('api', MAILGUN_API_KEY),
+    #         data={'from': 'Mentoring <mail@yuliiamartynenko.com>',
+    #               'to': serializer.data['email'],
+    #               'subject': SignupTemplate.subject,
+    #               'template': SignupTemplate.template,
+    #               })
+    #
+    #     res.raise_for_status()
+    #     sent = True
+    #
+    #
+    # except requests.HTTPError as e:
+    #     print(f'Exception: {e}', flush=True)
+    #     sent = False
+    #
+    # if not sent:
+    #     raise ServiceUnavailable()
 
     return JsonResponse(
         status=201,
         data={
-            'id': '<20220113195830.0f9bc6de9b894717@yuliiamartynenko.com>',
-            'message': 'Queued. Thank you.'}
+            'detail': 'success'
+        }
     )
 
 
@@ -121,7 +123,7 @@ def signin(request: HttpRequest) -> JsonResponse:
         raise AuthenticationFailed()
 
     session: models.Session = models.Session.objects.create(user=user)
-    
+
     response: Response = Response()
     response.set_cookie(
         key=settings.SESSION_COOKIE_NAME,
