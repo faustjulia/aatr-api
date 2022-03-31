@@ -1,3 +1,4 @@
+import datetime
 import os
 from pathlib import Path
 
@@ -38,7 +39,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_CREADENTIALS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
@@ -92,6 +93,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SESSION_COOKIE_NAME = 'AATR_SESSION'
+
+SESSION_DURATION = datetime.timedelta(days=365)
 
 LANGUAGE_CODE = 'en-us'
 

@@ -65,3 +65,7 @@ class Session(ProjectModel):
         auto_now_add=True,
         db_index=True,
     )
+
+    is_active = models.BooleanField(
+        default=True
+    )
